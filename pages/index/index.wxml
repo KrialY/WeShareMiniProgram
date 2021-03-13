@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class="container">
+  <ImageView name="krialy" />
+  <ImageView name="krialy" />
+  <ImageView name="krialy" />
+</view>
