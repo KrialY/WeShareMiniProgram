@@ -1,6 +1,9 @@
 <!--index.wxml-->
 <view class="container">
+  <view wx:for="{{imgs}}" wx:key="index">
+    <ImageView info="{{item}}"  name="krialy" />
+  </view>
+<!--  
   <ImageView name="krialy" />
-  <ImageView name="krialy" />
-  <ImageView name="krialy" />
+  <ImageView name="krialy" /> -->
 </view>

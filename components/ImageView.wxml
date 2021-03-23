@@ -1,7 +1,7 @@
 <view class="container">
   <image
     bindtap='triggleShow'
-    src="http://www.krialy.com/static/img/Introduce/img2.jpg"
+    src="{{src}}"
     class="img"
   />
   <view
@@ -10,6 +10,7 @@
     <button
       hover-class="btnHover"
       class="downloadContainer"
+      bindtap="download"
     >
       <text style="color: white;">下载</text>
     </button>

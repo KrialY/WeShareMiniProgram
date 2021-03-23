@@ -13,7 +13,8 @@ const formatNumber = n => {
   n = n.toString()
   return n[1] ? n : `0${n}`
 }
-
+const PATH = "http://www.krialy.com/static/upload/"
 module.exports = {
-  formatTime
+  formatTime,
+  PATH
 }
