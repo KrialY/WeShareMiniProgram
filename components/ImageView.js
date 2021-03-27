@@ -12,10 +12,15 @@ Component({
     info: {
       type: Object,
       value: {}
+    },
+    isPreviewShow: {
+      type: Boolean,
+      value: false
     }
   },
   data: {
-    src: ""
+    src: "",
+    isImageDownloaded: false
   }, // 私有数据，可用于模版渲染
 
   lifetimes: {
@@ -46,31 +51,75 @@ Component({
         isToolShow: !isToolShow
       })
     },
+    openPreviewShow() {
+      this.setData({
+        isPreviewShow: true
+      })
+    },
+    closePreviewShow() {
+      this.setData({
+        isPreviewShow: false
+      })
+    },
     download() {
-      wx.request({
-        url: `http://www.krialy.com/api/download`,
-        data: {
-          fname: this.properties.info.src
-        },
-        success(res) {
-          console.log(res);
-          const { data } = res;
-          const fs = wx.getFileSystemManager();
-          const filePath = wx.env.USER_DATA_PATH + '/temp.jpg';
-
-          fs.writeFile({
-            filePath,
-            data,
-            encoding: 'binary',
-            success: () => {
-              console.log(filePath, "success");
-              // this.setData({
-              //   imgPath: filePath,
-              // })
+      // krialy.com/static/upload/
+      wx.showLoading({
+        title: '下载中',
+        mask: true
+      });
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject("请求超时");
+        }, 7000);
+        wx.downloadFile({
+          url:`${PATH}${this.properties.info.src}`,
+          success(res) {
+            console.log(res);
+            if (res.statusCode === 200) {
+              resolve(res.tempFilePath);
+            }
+          },
+          fail(res) {
+            reject(res);
+          }
+        });
+      }, (info) => {
+        console.log(info);
+        wx.showToast({
+          title: '保存失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }).then(data => {
+        return new Promise((resolve, reject) => {
+          let img = data;
+          setTimeout(() => {
+            reject("写入图片超时");
+          }, 2000);
+          wx.saveImageToPhotosAlbum({
+            filePath: img,
+            success(res) {
+              resolve(res);
+            },
+            fail(res) {
+              reject(res);
             }
           });
-        }
-      })
+        })
+      }).then(() => {
+        wx.showToast({
+          title: '保存成功',
+          icon: 'success',
+          duration: 2000
+        });
+      }, (info) => {
+        console.log(info);
+        wx.showToast({
+          title: '保存失败',
+          icon: 'none',
+          duration: 2000
+        });
+      }) 
     }
   }
 

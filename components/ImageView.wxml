@@ -14,5 +14,28 @@
     >
       <text style="color: white;">下载</text>
     </button>
+    <button
+      hover-class="btnHover"
+      class="downloadContainer"
+      bindtap="openPreviewShow"
+      style="margin-left: 20rpx !important;"
+    >
+      <text style="color: white;">预览</text>
+    </button>
+  </view>
+  
+  <view class="preview"
+    wx:if="{{isPreviewShow}}"
+  >
+    <image
+      bindtap='triggleShow'
+      src="{{src}}"
+      class="preview-img"
+    />
+    <view class="preview-close"
+      bindtap="closePreviewShow"
+    >
+      <text>X</text>
+    </view>
   </view>
 </view>
